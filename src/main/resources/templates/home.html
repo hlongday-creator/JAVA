@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .bg-dark {
+            background-color: black !important;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+            background-color: transparent;
+        }
+        .course-card {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .course-date {
+            background-color: #e40046;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            width: 100px;
+        }
+        .course-info {
+            margin-left: 20px;
+        }
+        .course-info div {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Home</a>
+    <a class="navbar-brand" href="#">Add Course</a>
+</nav>
+<div class="container">
+    <div layout:fragment="content" class="row">
+        <div class="col-12">
+            <div th:each="course : ${listcourse}" class="course-card">
+                <div class="course-date" th:text="${#temporals.format(course.startDate, 'dd MMM yyyy')}">
+                    <!-- Date will be displayed here -->
+                </div>
+                <div class="course-info">
+                    <div th:text="${course.lectureName}">Lecture Name</div>
+                    <div th:text="${course.place}">Place</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="text-center mt-4">
+    <p>Lập trình ứng dụng Java - Nguyễn Huy Cường - @2023</p>
+</footer>
+</body>
+</html>

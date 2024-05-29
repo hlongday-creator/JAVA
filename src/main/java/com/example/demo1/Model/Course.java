@@ -1,5 +1,4 @@
 package com.example.demo1.Model;
-
 import java.time.LocalDate;
 
 public class Course {

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Create product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .bg-dark {
+    background-color: black !important;
+}
+a {
+    color: white;
+    text-decoration: none;
+    background-color: transparent;
+}
+        .course-card {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .course-date {
+            background-color: #e40046;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            width: 100px;
+        }
+        .course-info {
+            margin-left: 20px;
+        }
+        .course-info div {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container body-content">
+    <form action="#" th:action="@{/course/create}" th:object="${course}" method="post" class="form">
+        <div class="form-group">
+            <label for="place">Place:</label>
+            <input class="form-control" type="text" th:field="*{place}" id="place" placeholder="Place">
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input class="form-control" type="date" th:field="*{startDate}" id="startDate" placeholder="Start Date">
+        </div>
+        <div class="form-group">
+            <label for="lectureName">Lecture:</label>
+            <input class="form-control" type="text" th:field="*{lectureName}" id="lectureName" placeholder="Lecture">
+        </div>
+        <input type="submit" class="btn btn-success" value="Add">
+    </form>
+</div>
+</body>
+</html>
