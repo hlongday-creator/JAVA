@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person Information</title>
+</head>
+<body>
+<h1>Thông Tin</h1>
+<table border="1">
+    <a th:href="@{https://https://www.thymeleaf.org}">Thymeleaf</a>
+    <tr>
+        <th>Name</th>
+        <td th:text="${person.name}"></td>
+    </tr>
+    <tr>
+        <th>Age</th>
+        <td th:text="${person.age}"></td>
+    </tr>
+    <tr>
+        <th>Sex</th>
+        <td th:text="${person.sex == 1 ? 'Male' : 'Female'}"></td>
+    </tr>
+    <tr>
+        <th>Married</th>
+        <td th:text="${person.married ? 'đã có vợ' : 'chưa có vợ'}"></td>
+    </tr>
+    <tr>
+        <th>Create Time</th>
+        <td th:text="${person.createTime}"></td>
+    </tr>
+    <tr>
+        <th>Languages</th>
+        <td>
+            <ul>
+                <li th:each="lang : ${person.language}" th:text="${lang}"></li>
+            </ul>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
