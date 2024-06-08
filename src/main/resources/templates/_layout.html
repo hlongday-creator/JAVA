@@ -40,16 +40,21 @@
     </style>
 </head>
 <body>
-<nav class="navbar bg-dark" data-bs-theme="dark">
-    <div>
-    <a class="navbar-brand" th:href="@{/home}">Home</a>
-    <a class="navbar-brand" th:href="@{/course/create}">Add Course</a>
+<nav class="navbar bg-dark navbar-expand-lg" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/course/home}">Home</a>
+        <a class="navbar-brand" th:href="@{/course/create}">Add Course</a>
+        <a class="navbar-brand" href="#">Nhóm 13</a>
+        <form action="/course/home" method="get" class="d-flex ms-auto">
+            <input type="text" name="keyword" class="form-control me-2" placeholder="Search for courses..." aria-label="Search">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
     </div>
 </nav>
 
-    <div layout:fragment="content" class="container body-content"></div>
+<div layout:fragment="content" class="container body-content"></div>
 
-<div class="card-footer">
+<div class="card-footer text-center mt-4">
     <hr>
     Lập trình ứng dụng Java - Nguyễn Huy Cường ©2023
 </div>
