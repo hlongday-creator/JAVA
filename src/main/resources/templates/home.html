@@ -4,70 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-
-<div class="container">
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search for lecture name...">
-        <button onclick="searchCourse()">Search</button>
-    </div>
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/course/home">Home</a>
+    <a class="navbar-brand" href="/course/create">Add Course</a>
+    <a class="navbar-brand" href="#">Nhóm 13</a>
+</nav>
+<div class="container mt-4">
     <div layout:fragment="content" class="row">
         <div class="col-12">
-            <div th:each="course : ${listCourse}" class="course-card">
+            <div th:each="course : ${listcourse}" class="course-card border rounded p-3 my-3">
                 <div class="course-date" th:text="${#temporals.format(course.startDate, 'dd MMM yyyy')}">
                     <!-- Date will be displayed here -->
                 </div>
                 <div class="course-info">
                     <div th:text="${course.lectureName}">Lecture Name</div>
                     <div th:text="${course.place}">Place</div>
-                    <div class="action-buttons">
-                        <a th:href="@{/course/update/{id}(id=${course.id})}" class="edit-btn btn btn-outline-primary">Edit</a>
-                        <a th:href="@{/course/delete/{id}(id=${course.id})}" class="delete-btn btn btn-outline-danger">Delete</a>
-                    </div>
-
+                </div>
+                <div class="course-actions mt-3">
+                    <a th:href="@{/course/update/{id}(id=${course.id})}" class="btn btn-primary">Edit</a>
+                    <a th:href="@{/course/delete/{id}(id=${course.id})}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <footer class="text-center mt-4">
-    <p>Lập trình ứng dụng Java - Nguyễn Huy Cường - @2023</p>
+    <p>Lập trình ứng dụng Java - Nguyễn Huy Cường - @2024</p>
 </footer>
-<script>
-    function searchCourse() {
-        // Lấy giá trị của input
-        var input = document.getElementById("searchInput").  value.toUpperCase();
-        // Lấy danh sách các item trong danh sách
-        var items = document.querySelectorAll(".course-item");
-        var backToListBtn = document.querySelector(".back-to-list-btn");
-        // Duyệt qua từng item
-        for (var i = 0; i < items.length; i++) {
-            var lectureName = items[i].getElementsByClassName("course-info")[1];
-            if (lectureName) {
-                var txtValue = lectureName.textContent || lectureName.innerText;
-                // Kiểm tra xem có tồn tại từ khóa trong tên bài giảng không
-                if (txtValue.toUpperCase().indexOf(input) > -1) {
-                    items[i].style.display = "";
-                    // Hiển thị nút "Back to List" khi có kết quả tìm kiếm
-                    backToListBtn.style.display = "inline-block";
-                } else {
-                    items[i].style.display = "none";
-                    // Ẩn nút "Back to List" khi không có kết quả tìm kiếm
-                    backToListBtn.style.display = "none";
-                }
-            }
-        }
-    }
-
-    function backToList() {
-        window.location.href = "/course/home";
-    }
-
-    function goToCreate() {
-        window.location.href = "/course/create";
-    }
-</script>
 </body>
 </html>

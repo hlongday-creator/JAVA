@@ -6,32 +6,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseService {
-    @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
-    public void add(Course newCourse) {
-        courseRepository.save(newCourse);
+    @Autowired
+    public CourseService(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    public Course add(Course newCourse) {
+        return courseRepository.save(newCourse);
     }
 
     public List<Course> getAll() {
         return courseRepository.findAll();
     }
 
-    public Course getCourseById(Integer id) {
-        return courseRepository.findById(id).orElse(null);
+    public Optional<Course> getById(int id) {
+        return courseRepository.findById(id);
     }
 
-    public void update(Course updatedCourse) {
-        if (courseRepository.existsById(updatedCourse.getId())) {
-            courseRepository.save(updatedCourse);
+    public Course update(Course updatedCourse) {
+        Course existingCourse = courseRepository.findById(updatedCourse.getId())
+                .orElseThrow(() -> new IllegalStateException("Course with ID " +
+                        updatedCourse.getId() + " does not exist."));
+
+        // Update the fields of the existing course
+        existingCourse.setLectureName(updatedCourse.getLectureName());
+        existingCourse.setPlace(updatedCourse.getPlace());
+        existingCourse.setStartDate(updatedCourse.getStartDate());
+
+        return courseRepository.save(existingCourse);
+    }
+
+    public void delete(int id) {
+        if (!courseRepository.existsById(id)) {
+            throw new IllegalStateException("Course with ID " + id + " does not exist.");
         }
-    }
-
-    public void delete(Integer id) {
         courseRepository.deleteById(id);
+    }
+    public List<Course> search(String keyword) {
+        return courseRepository.findByLectureNameContaining(keyword);
+    }
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
     }
 
 }
