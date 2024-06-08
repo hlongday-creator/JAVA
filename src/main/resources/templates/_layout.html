@@ -11,7 +11,7 @@
             background-color: black !important;
         }
         a {
-            color: white;
+            color: blue;
             text-decoration: none;
             background-color: transparent;
         }
@@ -40,11 +40,17 @@
     </style>
 </head>
 <body>
+
 <nav class="navbar bg-dark" data-bs-theme="dark">
     <div>
     <a class="navbar-brand" th:href="@{/home}">Home</a>
     <a class="navbar-brand" th:href="@{/course/create}">Add Course</a>
     </div>
+    <div>
+        <input type="text" id="searchInput" placeholder="Tìm kiếm theo tên khóa học hoặc địa chỉ">
+        <button onclick="searchCourse()"class="btn btn-primary">Tìm kiếm</button>
+    </div>
+
 </nav>
 
     <div layout:fragment="content" class="container body-content"></div>
@@ -53,6 +59,39 @@
     <hr>
     Lập trình ứng dụng Java - Nguyễn Huy Cường ©2023
 </div>
+
+<script>
+    function searchCourse() {
+        // Lấy giá trị của input và chuyển thành chữ hoa để tìm kiếm không phân biệt hoa thường
+        var input = document.getElementById("searchInput").value.toUpperCase();
+        // Lấy danh sách các item trong danh sách khóa học
+        var items = document.querySelectorAll(".course-card");
+        // Lấy nút "Back to List"
+        var backToListBtn = document.querySelector(".back-to-list-btn");
+
+        // Duyệt qua từng item
+        for (var i = 0; i < items.length; i++) {
+            // Lấy phần tử chứa tên bài giảng
+            var lectureNameElement = items[i].querySelector(".course-info > div:nth-child(1)");
+            // Kiểm tra xem phần tử này có tồn tại không
+            if (lectureNameElement) {
+                var lectureName = lectureNameElement.textContent || lectureNameElement.innerText;
+                // Chuyển đổi tên bài giảng thành chữ hoa để so sánh không phân biệt hoa thường
+                lectureName = lectureName.toUpperCase();
+                // Kiểm tra xem có từ khóa trong tên bài giảng không
+                if (lectureName.indexOf(input) > -1) {
+                    // Nếu có, hiển thị item và hiển thị nút "Back to List"
+                    items[i].style.display = "";
+                    backToListBtn.style.display = "inline-block";
+                } else {
+                    // Nếu không, ẩn item
+                    items[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
 
 </body>
 </html>

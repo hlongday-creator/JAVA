@@ -1,21 +1,37 @@
 package com.example.demo1.Service;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
 
 import com.example.demo1.Model.Course;
+import com.example.demo1.Repository.CourseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CourseService {
-    private List<Course> listCourse = new ArrayList<>();
+    @Autowired
+    private CourseRepository courseRepository;
 
     public void add(Course newCourse) {
-        listCourse.add(newCourse);
+        courseRepository.save(newCourse);
     }
 
     public List<Course> getAll() {
-        return listCourse;
+        return courseRepository.findAll();
     }
-}
 
+    public Course getCourseById(Integer id) {
+        return courseRepository.findById(id).orElse(null);
+    }
+
+    public void update(Course updatedCourse) {
+        if (courseRepository.existsById(updatedCourse.getId())) {
+            courseRepository.save(updatedCourse);
+        }
+    }
+
+    public void delete(Integer id) {
+        courseRepository.deleteById(id);
+    }
+
+}
