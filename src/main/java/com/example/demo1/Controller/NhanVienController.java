@@ -4,6 +4,7 @@ import com.example.demo1.Model.NhanVien;
 import com.example.demo1.Service.NhanVienService;
 import com.example.demo1.Service.PhongBanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,13 @@ public class NhanVienController {
     private PhongBanService phongBanService;
 
     @GetMapping
-    public String listNhanVien(Model model) {
-        model.addAttribute("nhanViens", nhanVienService.getAllNhanVien());
+    public String listNhanVien(Model model,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "5") int size) {
+        Page<NhanVien> nhanVienPage = nhanVienService.getNhanViensPaginated(page, size);
+        model.addAttribute("nhanViens", nhanVienPage.getContent());
+        model.addAttribute("totalPages", nhanVienPage.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "nhanvien-list";
     }
 

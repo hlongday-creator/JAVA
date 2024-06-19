@@ -1,50 +1,70 @@
-@Controller
-@RequestMapping("/nhanvien")
-public class NhanVienController {
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách nhân viên</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<section layout:fragment="content">
+    <div style="height: 80px;"></div>
+    <div class="container mt-4">
+        <h2 class="text-center">THÔNG TIN NHÂN VIÊN</h2>
+        <a class="btn btn-success mb-3" sec:authorize="hasAuthority('ADMIN')" th:href="@{/nhanvien/create}">THÊM NHÂN VIÊN</a>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Mã Nhân Viên</th>
+                <th>Tên Nhân Viên</th>
+                <th>Giới tính</th>
+                <th>Nơi Sinh</th>
+                <th>Tên Phòng</th>
+                <th>Lương</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="nhanVien : ${nhanViens}">
+                <td th:text="${nhanVien.maNV}"></td>
+                <td th:text="${nhanVien.tenNV}"></td>
+                <td>
+                    <img th:src="@{${nhanVien.phai} == 'NU' ? '/images/woman.jpg' : '/images/man.jpg'}" width="30" height="30">
+                </td>
+                <td th:text="${nhanVien.noiSinh}"></td>
+                <td th:text="${nhanVien.phongBan.tenPhong}"></td>
+                <td th:text="${nhanVien.luong}"></td>
+                <td>
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <a class="btn btn-primary" th:href="@{/nhanvien/update/{id}(id=${nhanVien.maNV})}">Edit</a>
+                        <a class="btn btn-danger" th:href="@{/nhanvien/delete/{id}(id=${nhanVien.maNV})}">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-@Autowired
-private NhanVienService nhanVienService;
-
-@GetMapping
-public String listNhanVien(Model model,
-@RequestParam(defaultValue = "0") int page,
-@RequestParam(defaultValue = "5") int size) {
-Pageable pageable = PageRequest.of(page, size);
-Page<NhanVien> nhanVienPage = nhanVienService.getAllNhanVien(pageable);
-    model.addAttribute("nhanVienPage", nhanVienPage);
-    return "nhanvien-list";
-    }
-
-    @GetMapping("/create")
-    public String createNhanVienForm(Model model) {
-    model.addAttribute("nhanVien", new NhanVien());
-    model.addAttribute("phongBans", phongBanService.getAllPhongBan());
-    return "nhanvien-form";
-    }
-
-    @PostMapping("/create")
-    public String createNhanVien(@ModelAttribute NhanVien nhanVien) {
-    nhanVienService.saveNhanVien(nhanVien);
-    return "redirect:/nhanvien";
-    }
-
-    @GetMapping("/update/{id}")
-    public String updateNhanVienForm(@PathVariable String id, Model model) {
-    NhanVien nhanVien = nhanVienService.getNhanVienById(id);
-    model.addAttribute("nhanVien", nhanVien);
-    model.addAttribute("phongBans", phongBanService.getAllPhongBan());
-    return "nhanvien-form";
-    }
-
-    @PostMapping("/update")
-    public String updateNhanVien(@ModelAttribute NhanVien nhanVien) {
-    nhanVienService.saveNhanVien(nhanVien);
-    return "redirect:/nhanvien";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteNhanVien(@PathVariable String id) {
-    nhanVienService.deleteNhanVienById(id);
-    return "redirect:/nhanvien";
-    }
-    }
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/nhanvien(page=${currentPage - 1}, size=${5})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/nhanvien(page=${i}, size=${5})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/nhanvien(page=${currentPage + 1}, size=${5})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+</body>
+</html>

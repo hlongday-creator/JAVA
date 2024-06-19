@@ -3,6 +3,8 @@ package com.example.demo1.Service;
 import com.example.demo1.Model.NhanVien;
 import com.example.demo1.Repository.NhanVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,5 +31,9 @@ public class NhanVienService {
 
     public void deleteNhanVienById(String id) {
         nhanVienRepository.deleteById(id);
+    }
+
+    public Page<NhanVien> getNhanViensPaginated(int page, int size) {
+        return nhanVienRepository.findAll(PageRequest.of(page, size));
     }
 }
