@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm/Sửa nhân viên</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2 class="text-center" th:text="${nhanVien != null} ? 'Sửa nhân viên' : 'Thêm nhân viên'">Thêm nhân viên</h2>
+    <form th:action="@{${nhanVien != null} ? '/nhanvien/update' : '/nhanvien/create'}" th:object="${nhanVien}" method="post">
+        <div class="form-group">
+            <label for="maNV">Mã Nhân Viên</label>
+            <input type="text" class="form-control" id="maNV" th:field="*{maNV}" placeholder="Nhập mã nhân viên" required>
+        </div>
+        <div class="form-group">
+            <label for="tenNV">Tên Nhân Viên</label>
+            <input type="text" class="form-control" id="tenNV" th:field="*{tenNV}" placeholder="Nhập tên nhân viên" required>
+        </div>
+        <div class="form-group">
+            <label for="phai">Giới tính</label>
+            <select class="form-control" id="phai" th:field="*{phai}" required>
+                <option value="NAM">Nam</option>
+                <option value="NU">Nữ</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="noiSinh">Nơi Sinh</label>
+            <input type="text" class="form-control" id="noiSinh" th:field="*{noiSinh}" placeholder="Nhập nơi sinh" required>
+        </div>
+        <div class="form-group">
+            <label for="phongBan">Phòng Ban</label>
+            <select class="form-control" id="phongBan" th:field="*{phongBan.maPhong}" required>
+                <option th:each="phongBan : ${phongBans}" th:value="${phongBan.maPhong}" th:text="${phongBan.tenPhong}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="luong">Lương</label>
+            <input type="number" class="form-control" id="luong" th:field="*{luong}" placeholder="Nhập lương" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a class="btn btn-secondary" th:href="@{/nhanvien}">Hủy</a>
+    </form>
+</div>
+</body>
+</html>

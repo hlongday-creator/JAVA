@@ -1,0 +1,50 @@
+@Controller
+@RequestMapping("/nhanvien")
+public class NhanVienController {
+
+@Autowired
+private NhanVienService nhanVienService;
+
+@GetMapping
+public String listNhanVien(Model model,
+@RequestParam(defaultValue = "0") int page,
+@RequestParam(defaultValue = "5") int size) {
+Pageable pageable = PageRequest.of(page, size);
+Page<NhanVien> nhanVienPage = nhanVienService.getAllNhanVien(pageable);
+    model.addAttribute("nhanVienPage", nhanVienPage);
+    return "nhanvien-list";
+    }
+
+    @GetMapping("/create")
+    public String createNhanVienForm(Model model) {
+    model.addAttribute("nhanVien", new NhanVien());
+    model.addAttribute("phongBans", phongBanService.getAllPhongBan());
+    return "nhanvien-form";
+    }
+
+    @PostMapping("/create")
+    public String createNhanVien(@ModelAttribute NhanVien nhanVien) {
+    nhanVienService.saveNhanVien(nhanVien);
+    return "redirect:/nhanvien";
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateNhanVienForm(@PathVariable String id, Model model) {
+    NhanVien nhanVien = nhanVienService.getNhanVienById(id);
+    model.addAttribute("nhanVien", nhanVien);
+    model.addAttribute("phongBans", phongBanService.getAllPhongBan());
+    return "nhanvien-form";
+    }
+
+    @PostMapping("/update")
+    public String updateNhanVien(@ModelAttribute NhanVien nhanVien) {
+    nhanVienService.saveNhanVien(nhanVien);
+    return "redirect:/nhanvien";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteNhanVien(@PathVariable String id) {
+    nhanVienService.deleteNhanVienById(id);
+    return "redirect:/nhanvien";
+    }
+    }

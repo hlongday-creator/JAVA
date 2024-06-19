@@ -1,38 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org" layout:decorate="_layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Danh sách nhân viên</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="/course/home">Home</a>
-    <a class="navbar-brand" href="/course/create">Add Course</a>
-    <a class="navbar-brand" href="#">Nhóm 13</a>
-</nav>
 <div class="container mt-4">
-    <div layout:fragment="content" class="row">
-        <div class="col-12">
-            <div th:each="course : ${listcourse}" class="course-card border rounded p-3 my-3">
-                <div class="course-date" th:text="${#temporals.format(course.startDate, 'dd MMM yyyy')}">
-                    <!-- Date will be displayed here -->
-                </div>
-                <div class="course-info">
-                    <div th:text="${course.lectureName}">Lecture Name</div>
-                    <div th:text="${course.place}">Place</div>
-                </div>
-                <div class="course-actions mt-3">
-                    <a th:href="@{/course/update/{id}(id=${course.id})}" class="btn btn-primary">Edit</a>
-                    <a th:href="@{/course/delete/{id}(id=${course.id})}" class="btn btn-danger">Delete</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h2 class="text-center">THÔNG TIN NHÂN VIÊN</h2>
+    <a class="btn btn-success mb-3" th:href="@{/nhanvien/create}">THÊM NHÂN VIÊN</a>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Mã Nhân Viên</th>
+            <th>Tên Nhân Viên</th>
+            <th>Giới tính</th>
+            <th>Nơi Sinh</th>
+            <th>Tên Phòng</th>
+            <th>Lương</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="nhanVien : ${nhanViens}">
+            <td th:text="${nhanVien.maNV}"></td>
+            <td th:text="${nhanVien.tenNV}"></td>
+            <td>
+                <img th:src="@{${nhanVien.phai} == 'NU' ? '/images/woman.jpg' : '/images/man.jpg'}" width="30" height="30">
+            </td>
+            <td th:text="${nhanVien.noiSinh}"></td>
+            <td th:text="${nhanVien.phongBan.tenPhong}"></td>
+            <td th:text="${nhanVien.luong}"></td>
+            <td>
+                <a class="btn btn-primary" th:href="@{/nhanvien/update/{id}(id=${nhanVien.maNV})}">Edit</a>
+                <a class="btn btn-danger" th:href="@{/nhanvien/delete/{id}(id=${nhanVien.maNV})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<footer class="text-center mt-4">
-    <p>Lập trình ứng dụng Java - Nguyễn Huy Cường - @2024</p>
-</footer>
 </body>
 </html>
